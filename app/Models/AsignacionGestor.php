@@ -26,3 +26,10 @@ class AsignacionGestor extends Model
         return $this->belongsTo(Sucursal::class, 'sucursal_id');
     }
 }
+
+    {
+        $user = User::where('role', 'gestor')->findOrFail($id);
+        AsignacionGestor::where('usuario_id', $user->id)->delete();
+        $user->delete();
+        return response()->json(null, 204);
+    }
