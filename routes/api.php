@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TurnoController;
+use App\Http\Controllers\ColaController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\AlertaController;
+use App\Http\Controllers\ReporteController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,3 +28,19 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('turnos', TurnoController::class);
+Route::apiResource('colas', ColaController::class);
+Route::apiResource('citas', CitaController::class);
+Route::apiResource('alertas', AlertaController::class);
+Route::get('reportes', [ReporteController::class, 'index']);
+Route::get('reportes/avanzados', [ReporteController::class, 'avanzados']);
+Route::get('turnos/espera', [TurnoController::class, 'enEspera']);
+Route::post('turnos/llamar-siguiente', [TurnoController::class, 'llamarSiguiente']);
+Route::get('turnos/tablero', [TurnoController::class, 'tableroActual']);
+Route::get('turnos/historial', [TurnoController::class, 'historial']);
+Route::post('turnos/{id}/cancelar', [TurnoController::class, 'cancelar']);
+Route::post('turnos/{id}/reasignar', [TurnoController::class, 'reasignar']);
+Route::post('turnos/validar-qr', [TurnoController::class, 'validarQR']);
+Route::post('alertas/crear-por-espera', [AlertaController::class, 'crearPorEspera']);
+Route::post('alertas/{id}/atender', [AlertaController::class, 'atender']);
