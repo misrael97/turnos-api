@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+       Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->timestamp('email_verified_at')->nullable();
+    $table->string('password');
+    $table->enum('role', ['admin_general', 'admin_sucursal', 'usuario_cliente'])->default('usuario_cliente');
+    $table->unsignedBigInteger('branch_id')->nullable(); // <-- Solo definimos la columna
+    $table->rememberToken();
+    $table->timestamps();
+});
     }
 
     /**

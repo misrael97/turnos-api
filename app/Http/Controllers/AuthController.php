@@ -5,48 +5,59 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // Registro de usuario
     public function register(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:admin_general,admin_sucursal,usuario_cliente',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
-        return response()->json(['message' => 'Usuario registrado correctamente'], 201);
+        return response()->json(['message' => 'Usuario registrado correctamente', 'user' => $user], 201);
     }
 
+    // Login de usuario
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Las credenciales son incorrectas.'],
-            ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        $token = $user->createToken('token')->plainTextToken;
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Credenciales incorrectas'], 401);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'token' => $token,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
             'user' => $user,
         ]);
     }
 }
-
