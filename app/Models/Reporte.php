@@ -9,3 +9,5 @@ class Reporte extends Model
     // Este modelo puede usarse para consultas personalizadas de reportes
     // No requiere fillable porque no se persiste
 }
+
+

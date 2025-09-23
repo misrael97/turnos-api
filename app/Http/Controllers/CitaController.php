@@ -36,3 +36,5 @@ class CitaController extends Controller
         return response()->json(null, 204);
     }
 }
+
+

@@ -12,3 +12,5 @@ class Alerta extends Model
         'mensaje', 'fecha', 'turno_id', 'atendida'
     ];
 }
+
+

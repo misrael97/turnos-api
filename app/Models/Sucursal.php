@@ -20,3 +20,5 @@ class Sucursal extends Model
         return $this->belongsTo(Negocio::class);
     }
 }
+
+

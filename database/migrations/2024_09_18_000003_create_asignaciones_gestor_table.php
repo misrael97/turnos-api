@@ -21,3 +21,5 @@ return new class extends Migration
         Schema::dropIfExists('asignaciones_gestor');
     }
 };
+
+

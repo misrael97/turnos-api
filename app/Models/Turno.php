@@ -12,3 +12,5 @@ class Turno extends Model
         'numero', 'estado', 'cliente', 'cola_id', 'fecha'
     ];
 }
+
+

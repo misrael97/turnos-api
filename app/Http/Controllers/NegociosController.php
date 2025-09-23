@@ -40,3 +40,5 @@ class NegociosController extends Controller
         return response()->json(null, 204);
     }
 }
+
+

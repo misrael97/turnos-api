@@ -33,3 +33,5 @@ class AsignacionGestor extends Model
         $user->delete();
         return response()->json(null, 204);
     }
+
+

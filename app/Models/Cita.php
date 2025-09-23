@@ -12,3 +12,5 @@ class Cita extends Model
         'cliente', 'fecha', 'hora', 'sucursal_id'
     ];
 }
+
+

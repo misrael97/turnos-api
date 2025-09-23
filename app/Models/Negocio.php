@@ -14,3 +14,5 @@ class Negocio extends Model
         'fecha_creacion',
     ];
 }
+
+

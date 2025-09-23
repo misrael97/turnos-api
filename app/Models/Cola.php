@@ -12,3 +12,5 @@ class Cola extends Model
         'nombre', 'descripcion'
     ];
 }
+
+
