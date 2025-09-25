@@ -16,3 +16,4 @@ class Negocio extends Model
 }
 
 
+

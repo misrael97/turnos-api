@@ -42,3 +42,4 @@ class NegociosController extends Controller
 }
 
 
+
