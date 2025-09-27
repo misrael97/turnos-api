@@ -27,13 +27,6 @@ class AsignacionGestor extends Model
     }
 }
 
-    {
-        $user = User::where('role', 'gestor')->findOrFail($id);
-        AsignacionGestor::where('usuario_id', $user->id)->delete();
-        $user->delete();
-        return response()->json(null, 204);
-    }
-
 
 
 
