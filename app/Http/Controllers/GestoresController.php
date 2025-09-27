@@ -11,11 +11,17 @@ class GestoresController extends Controller
 {
     public function index()
     {
+        if (!in_array(request()->user()->role, ['admin_general', 'admin_sucursal'])) {
+            abort(403, 'Solo administradores pueden ver gestores.');
+        }
         return User::where('role', 'gestor')->get();
     }
 
     public function store(Request $request)
     {
+        if (!in_array($request->user()->role, ['admin_general', 'admin_sucursal'])) {
+            abort(403, 'Solo administradores pueden crear gestores.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -37,11 +43,17 @@ class GestoresController extends Controller
 
     public function show($id)
     {
+        if (!in_array(request()->user()->role, ['admin_general', 'admin_sucursal'])) {
+            abort(403, 'Solo administradores pueden ver gestores.');
+        }
         return User::where('role', 'gestor')->findOrFail($id);
     }
 
     public function update(Request $request, $id)
     {
+        if (!in_array($request->user()->role, ['admin_general', 'admin_sucursal'])) {
+            abort(403, 'Solo administradores pueden editar gestores.');
+        }
         $user = User::where('role', 'gestor')->findOrFail($id);
         $user->update($request->only('name', 'email'));
         if ($request->filled('password')) {
@@ -59,12 +71,18 @@ class GestoresController extends Controller
 
     public function destroy($id)
     {
+        if (!in_array(request()->user()->role, ['admin_general', 'admin_sucursal'])) {
+            abort(403, 'Solo administradores pueden eliminar gestores.');
+        }
         $user = User::where('role', 'gestor')->findOrFail($id);
         $user->delete();
         AsignacionGestor::where('usuario_id', $id)->delete();
         return response()->json(null, 204);
     }
 }
+
+
+
 
 
 

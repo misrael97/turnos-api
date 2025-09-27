@@ -12,3 +12,6 @@ class Reporte extends Model
 
 
 
+
+
+

@@ -14,6 +14,9 @@ class TurnoController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->user()->role !== 'usuario_cliente') {
+            abort(403, 'Solo los usuarios pueden solicitar turnos.');
+        }
         $turno = Turno::create($request->all());
         return response()->json($turno, 201);
     }
@@ -50,6 +53,9 @@ class TurnoController extends Controller
     // Llamar al siguiente turno de una cola
     public function llamarSiguiente(Request $request)
     {
+        if ($request->user()->role !== 'gestor') {
+            abort(403, 'Solo los gestores pueden llamar turnos.');
+        }
         $colaId = $request->input('cola_id');
         $turno = Turno::where('estado', 'espera')->where('cola_id', $colaId)->orderBy('fecha')->orderBy('id')->first();
         if ($turno) {
@@ -71,6 +77,9 @@ class TurnoController extends Controller
     // Historial de turnos atendidos
     public function historial(Request $request)
     {
+        if ($request->user()->role !== 'gestor') {
+            abort(403, 'Solo los gestores pueden ver el historial de turnos.');
+        }
         $colaId = $request->input('cola_id');
         $query = Turno::where('estado', 'atendido');
         if ($colaId) {
@@ -82,6 +91,10 @@ class TurnoController extends Controller
     // Cancelar un turno
     public function cancelar($id)
     {
+        $user = request()->user();
+        if (!in_array($user->role, ['gestor', 'usuario_cliente'])) {
+            abort(403, 'No autorizado para cancelar turnos.');
+        }
         $turno = Turno::findOrFail($id);
         $turno->estado = 'cancelado';
         $turno->save();
@@ -91,6 +104,9 @@ class TurnoController extends Controller
     // Reasignar un turno a otra cola
     public function reasignar(Request $request, $id)
     {
+        if ($request->user()->role !== 'gestor') {
+            abort(403, 'Solo los gestores pueden reasignar turnos.');
+        }
         $turno = Turno::findOrFail($id);
         $turno->cola_id = $request->input('cola_id');
         $turno->save();

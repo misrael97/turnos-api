@@ -36,3 +36,6 @@ class AsignacionGestor extends Model
 
 
 
+
+
+

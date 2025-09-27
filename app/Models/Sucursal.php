@@ -23,3 +23,6 @@ class Sucursal extends Model
 
 
 
+
+
+
