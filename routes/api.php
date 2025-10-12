@@ -28,14 +28,20 @@ use App\Http\Controllers\GestoresController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::apiResource('alertas', AlertaController::class);
+    // Puedes agregar aquí otras rutas protegidas si lo deseas
 });
 
+// Rutas públicas
 Route::apiResource('turnos', TurnoController::class);
 Route::apiResource('colas', ColaController::class);
 Route::apiResource('citas', CitaController::class);
-Route::apiResource('alertas', AlertaController::class);
 Route::apiResource('negocios', NegociosController::class);
 Route::apiResource('sucursales', SucursalesController::class);
 Route::apiResource('gestores', GestoresController::class);
